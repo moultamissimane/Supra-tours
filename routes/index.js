@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/user');
+var user = require('../models/user');
 const Ticket = require('../models/Ticket')
 const bcrypt = require('bcrypt')
 const validation = require('../middleware/validation/validation')
@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
 	return res.render('index.ejs');
 });
 
-
+// register api
 router.post('/', function(req, res, next) {
 	console.log(req.body);
 	var personInfo = req.body;
@@ -23,10 +23,10 @@ router.post('/', function(req, res, next) {
 	} else {
 		if (personInfo.password == personInfo.passwordConf) {
 
-			User.findOne({email:personInfo.email},function(err,data){
+			user.findOne({email:personInfo.email},function(err,data){
 				if(!data){
 					var c;
-					User.findOne({},function(err,data){
+					user.findOne({},function(err,data){
 
 						if (data) {
 							console.log("if");
@@ -35,7 +35,7 @@ router.post('/', function(req, res, next) {
 							c=1;
 						}
 
-						var newPerson = new User({
+						var newPerson = new user({
 							unique_id:c,
 							email:personInfo.email,
 							username: personInfo.username,
@@ -67,9 +67,10 @@ router.get('/login', function (req, res, next) {
 	return res.render('login.ejs');
 });
 
+// login api
 router.post('/login', function (req, res, next) {
 	//console.log(req.body);
-	User.findOne({email:req.body.email},function(err,data){
+	user.findOne({email:req.body.email},function(err,data){
 		if(data){
 			
 			if(data.password==req.body.password){
@@ -87,9 +88,10 @@ router.post('/login', function (req, res, next) {
 	});
 });
 
+// profile info api 
 router.get('/profile', function (req, res, next) {
 	console.log("profile");
-	User.findOne({unique_id:req.session.userId},function(err,data){
+	user.findOne({unique_id:req.session.userId},function(err,data){
 		console.log("data");
 		console.log(data);
 		if(!data){
@@ -101,6 +103,7 @@ router.get('/profile', function (req, res, next) {
 	});
 });
 
+// logout api 
 router.get('/logout', function (req, res, next) {
 	console.log("logout")
 	if (req.session) {
@@ -115,6 +118,7 @@ router.get('/logout', function (req, res, next) {
 }
 });
 
+// forgetpassword api
 router.get('/forgetpass', function (req, res, next) {
 	res.render("forget.ejs");
 });
@@ -122,7 +126,7 @@ router.get('/forgetpass', function (req, res, next) {
 router.post('/forgetpass', function (req, res, next) {
 	//console.log('req.body');
 	//console.log(req.body);
-	User.findOne({email:req.body.email},function(err,data){
+	user.findOne({email:req.body.email},function(err,data){
 		console.log(data);
 		if(!data){
 			res.send({"Success":"This Email Is not regestered!"});
@@ -154,7 +158,7 @@ router.post('/ticket', (req, res) => {
     if (!result) return res.status(404).json({ message: data })
 
     const ticket = new Ticket({ seat_number: req.body.seat_number })
-    const user = new User(req.body.passenger)
+    const user = new user(req.body.passenger)
 
     user.save()
         .then(data => {
@@ -163,7 +167,7 @@ router.post('/ticket', (req, res) => {
                 ticket.save()
                     .then(data => res.status(200).json(data))
                     .catch(err => {
-                        User.findOneAndDelete({ _id: user._id })
+                        user.findOneAndDelete({ _id: user._id })
                             .then((data) => res.status(400))
                             .catch(err => res.status(400).json({ message: err }))
                     })
@@ -189,7 +193,7 @@ router.put('/ticket/:ticket_id', (req, res) => {
             if (err) res.status(404).json({ message: err })
             if (ticket) {
                 const user_id = ticket.passenger
-                User.remove({ _id: user_id }, function (err) {
+                user.remove({ _id: user_id }, function (err) {
                     if (err) {
                         res.status(404).json({ message: err })
                     }
@@ -208,7 +212,7 @@ router.put('/ticket/:ticket_id', (req, res) => {
         Ticket.findById(ticket_id, function (err, ticket) {
             if (err) res.status(404).json({ message: err })
             if (ticket) {
-                const user = new User(passenger)
+                const user = new user(passenger)
                 user.save()
                     .then(data => {
                         ticket.passenger = data._id
@@ -232,13 +236,12 @@ router.put('/user/:ticket_id', (req, res) => {
         if (err) res.status(404).json({ message: err })
         if (ticket) {
             const user_id = ticket.passenger
-            User.findById(user_id)
+            user.findById(user_id)
                 .then(user => {
-                    if ('name' in payload) user.name = payload.name
-                    if ('sex' in payload) user.sex = payload.sex
+                    if ('username' in payload) user.name = payload.name
                     if ('email' in payload) user.email = payload.email
-                    if ('phone' in payload) user.phone = payload.phone
-                    if ('age' in payload) user.age = payload.age
+                    // if ('phone' in payload) user.phone = payload.phone
+                    // if ('age' in payload) user.age = payload.age
                     user.save()
                         .then(data => res.status(202).json(data))
                         .catch(err => res.status(404).json({ message: err }))
@@ -279,7 +282,7 @@ router.get('/ticket/details/:ticket_id', (req, res) => {
     Ticket.findById(ticket_id, function (err, ticket) {
         if (err) res.status(404).json({ message: err })
         if (ticket) {
-            User.findById(ticket.passenger, function (err, user) {
+            user.findById(ticket.passenger, function (err, user) {
                 if (err) res.status(404).json({ message: err })
                 if (user) res.status(200).json(user)
             })

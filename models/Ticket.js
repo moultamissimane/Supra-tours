@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const User = require('../models/User')
+const user = require('../models/user')
 
 const TicketSchema = mongoose.Schema({
     seat_number: { type: Number, min: 1, max: 40, required: true },
