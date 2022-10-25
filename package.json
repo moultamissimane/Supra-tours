@@ -1,32 +1,27 @@
 {
-  "name": "creating-registration-and-login-form-in-nodejs-and-mongodb",
-  "version": "1.0.0",
-  "description": "This is a user login and registration app using Node.js, Express, Mongoose and express-sessions. ",
-  "main": "server.js",
-  "dependencies": {
-    "bcrypt": "^5.1.0",
-    "connect-mongo": "^3.0.0",
-    "dotenv": "^8.2.0",
-    "ejs": "^3.0.1",
-    "express": "^4.17.1",
-    "express-session": "^1.16.2",
-    "joi": "^17.6.3",
-    "mongoose": "^5.6.10",
-    "mongoose-unique-validator": "^3.1.0"
-  },
-  "devDependencies": {},
+  "name": "react-app-supratours",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/guruhariharaun/creating-registration-and-login-form-in-nodejs-and-mongodb"
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.8.6",
+    "dotenv": "^16.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.2"
   },
-  "author": "GuruRoxz",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/guruhariharaun/creating-registration-and-login-form-in-nodejs-and-mongodb"
-  },
-  "homepage": "https://github.com/guruhariharaun/creating-registration-and-login-form-in-nodejs-and-mongodb#read.me"
+  "devDependencies": {
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.1.0",
+    "autoprefixer": "^10.4.12",
+    "postcss": "^8.4.18",
+    "tailwindcss": "^3.2.1",
+    "vite": "^3.1.0"
+  }
 }
