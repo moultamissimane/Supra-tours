@@ -1,9 +1,20 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import supratour from "../assets/Supratour.jpg";
+import axios from "axios";
 
 const Register = () => {
-  const handleSubmit = (value) => {
-    // e.preventDefault();
+  const handleSubmit = async (values) => {
+    try {
+      const response = await axios.post("/api/users/register", values);
+      if (response.success) {
+        message.success(response.data.message);
+      } else {
+        message.error(response.data.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
     console.log("login");
   };
 
@@ -18,7 +29,6 @@ const Register = () => {
       <div className="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
         <div className="flex-col flex  self-center p-10 sm:max-w-5xl xl:max-w-2xl  z-10">
           <div className="self-start hidden lg:flex flex-col  text-white">
-            {/* <img src className="mb-3" /> */}
             <h1 className="mb-3 font-bold text-5xl">Welcome to Supratours </h1>
             <p className="pr-3">
               Lorem ipsum is placeholder text commonly used in the graphic,
@@ -33,7 +43,7 @@ const Register = () => {
               <h3 className="font-bold text-3xl text-gray-800">Sign Up </h3>
               <p className="text-gray-500">Please create new account.</p>
             </div>
-            <form action="" handleSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
               <div className="space-y-5">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700 tracking-wide">
@@ -41,7 +51,8 @@ const Register = () => {
                   </label>
                   <input
                     className=" w-full bg-white text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
-                    type
+                    type="text"
+                    name="name"
                     placeholder="Enter your name"
                   />
                 </div>
@@ -51,7 +62,8 @@ const Register = () => {
                   </label>
                   <input
                     className=" w-full bg-white text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
-                    type
+                    type="email"
+                    name="email"
                     placeholder="mail@gmail.com"
                   />
                 </div>
@@ -61,7 +73,8 @@ const Register = () => {
                   </label>
                   <input
                     className="w-full bg-white content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
-                    type
+                    type="password"
+                    name="password"
                     placeholder="Enter your password"
                   />
                 </div>
@@ -75,7 +88,7 @@ const Register = () => {
                 <div>
                   <button
                     type="submit"
-                    className="w-full flex justify-center outline-none bg-gray-400 border border-neutral-800 hover:border-neutral-800 hover:bg-gray-600 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500"
+                    className="w-full flex justify-center outline-none bg-gray-400 border border-neutral-800 hover:border-neutral-800 hover:bg-gray-600 text-gray-100 p-3  rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
                   >
                     Sign in
                   </button>
@@ -84,7 +97,12 @@ const Register = () => {
             </form>
 
             <div className="pt-5 text-center text-gray-400 text-xs">
-              <span>Copyright © 2021-2022</span>
+              <span>Already have an account?</span>
+              <Link to="/login" className="no-underline">
+                <h2 className="text-xl text-gray-500 hover:text-white mt-5 rounded-full p-2   hover:shadow-xl hover:bg-black transition ease-in duration-500">
+                  Login
+                </h2>
+              </Link>
             </div>
           </div>
         </div>

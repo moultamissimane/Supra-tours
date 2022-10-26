@@ -1,12 +1,13 @@
 import React from "react";
 import supratour from "../assets/Supratour.jpg";
+import { Link } from "react-router-dom";
+
 
 const Login = () => {
 
 //  handle form submit for login
-  const handleSubmit = (value) => {
-    e.preventDefault();
-    console.log("login");
+  const onFinish = (value) => {
+    console.log("value");
   };
 
 
@@ -38,7 +39,7 @@ const Login = () => {
               <h3 className="font-bold text-3xl text-gray-800">Login </h3>
               <p className="text-gray-500">Please login in to your account.</p>
             </div>
-            <form action="submit" handleSubmit={handleSubmit}>
+            <form onFinish={onFinish}>
               <div className="space-y-5">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700 tracking-wide">
@@ -46,7 +47,8 @@ const Login = () => {
                   </label>
                   <input
                     className=" w-full bg-white text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
-                    type
+                    type="email"
+                    name="email"
                     placeholder="mail@gmail.com"
                   />
                 </div>
@@ -56,7 +58,8 @@ const Login = () => {
                   </label>
                   <input
                     className="w-full bg-white content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
-                    type
+                    type="password"
+                    name="password"
                     placeholder="Enter your password"
                   />
                 </div>
@@ -78,7 +81,11 @@ const Login = () => {
               </div>
             </form>
             <div className="pt-5 text-center text-gray-400 text-xs">
-              <span>Copyright © 2021-2022</span>
+              <span>Don't have an account?</span>
+              <Link to='/register' className="no-underline">
+              <h2 className="text-xl text-gray-500 hover:text-white mt-5 rounded-full p-2   hover:shadow-xl hover:bg-black transition ease-in duration-500">
+                Sign up</h2>
+              </Link>
             </div>
           </div>
         </div>
